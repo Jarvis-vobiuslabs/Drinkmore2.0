@@ -5,7 +5,7 @@ import { Droplet, Instagram, Linkedin, Twitter, Bell, Target, BarChart3, Setting
 import avatar1 from "@/assets/avatar-1.jpg";
 import avatar2 from "@/assets/avatar-2.jpg";
 import avatar3 from "@/assets/avatar-3.jpg";
-import WaveDivider from "@/components/WaveDivider";
+
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 20 },
@@ -308,13 +308,9 @@ const Index = () => (
   <div className="bg-background text-foreground min-h-screen">
     <Navbar />
     <Hero />
-    <WaveDivider variant="a" />
     <StatsSection />
-    <WaveDivider variant="b" />
     <MissionSection />
-    <WaveDivider variant="c" />
     <FeaturesSection />
-    <WaveDivider variant="a" flip />
     <CTASection />
     <Footer />
   </div>
