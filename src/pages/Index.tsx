@@ -308,9 +308,13 @@ const Index = () => (
   <div className="bg-background text-foreground min-h-screen">
     <Navbar />
     <Hero />
+    <WaveDivider variant="a" />
     <StatsSection />
+    <WaveDivider variant="b" />
     <MissionSection />
+    <WaveDivider variant="c" />
     <FeaturesSection />
+    <WaveDivider variant="a" flip />
     <CTASection />
     <Footer />
   </div>
