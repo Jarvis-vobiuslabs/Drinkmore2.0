@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, type Easing } from "framer-motion";
 import Hls from "hls.js";
 import { Droplet, Instagram, Linkedin, Twitter, Bell, Target, BarChart3, Settings2 } from "lucide-react";
 import avatar1 from "@/assets/avatar-1.jpg";
@@ -10,7 +10,7 @@ const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 20 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, margin: "-100px" },
-  transition: { duration: 0.6, delay, ease: "easeOut" },
+  transition: { duration: 0.6, delay, ease: "easeOut" as Easing },
 });
 
 /* ─── Navbar ─── */
