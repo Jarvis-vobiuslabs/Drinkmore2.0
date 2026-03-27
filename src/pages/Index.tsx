@@ -42,7 +42,7 @@ const Navbar = () => (
 const Hero = () => (
   <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
     <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0">
-      <source src="https://cdn.pixabay.com/video/2024/06/12/216221_large.mp4" type="video/mp4" />
+      <source src="https://videos.pexels.com/video-files/2499611/2499611-hd_1920_1080_30fps.mp4" type="video/mp4" />
     </video>
     <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-background to-transparent z-[1]" />
     <div className="absolute inset-0 bg-background/40 z-[1]" />
@@ -152,7 +152,7 @@ const MissionSection = () => (
       <video
         autoPlay loop muted playsInline
         className="w-full max-w-[500px] aspect-square object-cover rounded-3xl"
-        src="https://cdn.pixabay.com/video/2020/07/30/45654-445498498_large.mp4"
+        src="https://videos.pexels.com/video-files/3163534/3163534-uhd_2560_1440_30fps.mp4"
       />
     </motion.div>
 
@@ -190,7 +190,7 @@ const FeaturesSection = () => (
       <video
         autoPlay loop muted playsInline
         className="w-full rounded-2xl aspect-[3/1] object-cover"
-        src="https://cdn.pixabay.com/video/2019/07/10/25098-347735498_large.mp4"
+        src="https://videos.pexels.com/video-files/1918465/1918465-uhd_2560_1440_25fps.mp4"
       />
     </motion.div>
 
