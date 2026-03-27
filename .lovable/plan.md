@@ -1,50 +1,20 @@
 
-# Drink More — Dark Monochrome Landing Page
 
-A sleek, dark (#000) landing page for "Drink More," a water-drinking reminder app. Follows the Mindloop template structure with all sections re-themed for hydration.
+# Blue Gradient Waves Background
 
-## Tech & Design
-- React + Vite + TypeScript + Tailwind + shadcn/ui + Framer Motion + hls.js
-- Pure black background, white foreground, monochrome only
-- Fonts: Inter (sans) + Instrument Serif (serif italic accents)
-- Liquid glass effect on buttons/cards
-- fadeUp staggered animations throughout
+Replace the flat black background with a dark-to-blue wavy gradient across the page.
 
-## Sections (top to bottom)
+## Approach
 
-### 1. Navbar (fixed, transparent)
-- Left: Water droplet logo icon + "Drink More" bold text
-- Center: Nav links — Home, How It Works, Features, Download
-- Right: Social icons (Instagram, Twitter/X, LinkedIn) in liquid-glass circles
+1. **Update CSS variables** in `src/index.css`: shift `--background` from pure black `0 0% 0%` to a deep dark blue like `220 40% 3%`, and adjust `--card`, `--secondary`, `--muted`, `--border`, `--input` to complementary dark blue tones.
 
-### 2. Hero (full viewport)
-- Background: Free water-themed stock video (dark/abstract water ripple), autoplaying, looped, muted
-- Avatar row: 3 overlapping avatars + "12,000+ people staying hydrated"
-- Heading: "Stay Hydrated, Stay *Alive*" (*Alive* in serif italic)
-- Subtitle: "Smart reminders that help you build the habit of drinking enough water every day."
-- Email waitlist form in liquid-glass pill with "JOIN WAITLIST" button
+2. **Add a wavy gradient body background** using CSS — a multi-stop `background` with layered radial or linear gradients in dark navy/blue tones (`#030712`, `#0c1a3d`, `#091638`) to create organic flowing depth. Use `background-size` and `background-position` to simulate wave-like color bands across the page.
 
-### 3. "Your Body Needs Water" Section
-- Heading: "Your body runs on water. Are you giving it *enough*?" (*enough* in serif italic)
-- 3 stat cards with icons: "60% of your body is water", "Even 2% dehydration hurts focus", "Most people drink half of what they need"
+3. **Add a decorative SVG wave divider** between major sections (Hero → Stats, Stats → Mission, etc.) using inline SVG `<path>` elements with soft blue fill colors, creating visible wavy transitions.
 
-### 4. Mission Section (scroll-driven word reveal)
-- Large looping water video (abstract/dark)
-- Word-by-word scroll reveal paragraph: "We believe hydration is the simplest upgrade to your health — a tiny habit with massive impact on your energy, focus, and well-being."
-- Second paragraph: "Drink More makes it effortless with smart reminders, progress tracking, and gentle nudges throughout your day."
+4. **Keep foreground white** — all text, icons, and the liquid-glass effect stay white/monochrome so content remains readable against the blue background.
 
-### 5. Features Section
-- Label: "FEATURES"
-- Heading: "The app for *effortless* hydration" (*effortless* in serif italic)
-- Video placeholder showing app mockup concept
-- 4-column feature grid: Smart Reminders, Daily Goals, Progress Tracking, Personalized Plans
+## Files Changed
+- `src/index.css` — updated CSS variables + wavy gradient background styles
+- `src/pages/Index.tsx` — optional SVG wave dividers between sections
 
-### 6. CTA Section
-- HLS background video with dark overlay
-- Droplet logo icon
-- Heading: "Start Drinking *More*" (*More* in serif italic)
-- Two buttons: "Join the Waitlist" (solid white) + "Download App" (liquid-glass, links to app stores)
-
-### 7. Footer
-- Left: © 2026 Drink More. All rights reserved.
-- Right: Privacy, Terms, Contact links
