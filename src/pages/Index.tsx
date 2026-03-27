@@ -152,7 +152,7 @@ const MissionSection = () => (
       <video
         autoPlay loop muted playsInline
         className="w-full max-w-[500px] aspect-square object-cover rounded-3xl"
-        src="https://cdn.pixabay.com/video/2020/07/30/45654-445498498_large.mp4"
+        src="https://videos.pexels.com/video-files/3163534/3163534-uhd_2560_1440_30fps.mp4"
       />
     </motion.div>
 
@@ -190,7 +190,7 @@ const FeaturesSection = () => (
       <video
         autoPlay loop muted playsInline
         className="w-full rounded-2xl aspect-[3/1] object-cover"
-        src="https://cdn.pixabay.com/video/2019/07/10/25098-347735498_large.mp4"
+        src="https://videos.pexels.com/video-files/1918465/1918465-uhd_2560_1440_25fps.mp4"
       />
     </motion.div>
 
