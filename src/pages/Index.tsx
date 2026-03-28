@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
+import { LoadingScreen } from "@/components/LoadingScreen";
 import { motion, useScroll, useTransform, type Easing } from "framer-motion";
 import Hls from "hls.js";
 import { Droplet, Instagram, Linkedin, Twitter, Bell, Target, BarChart3, Settings2, Menu, X } from "lucide-react";
@@ -23,6 +24,11 @@ const Navbar = () => {
         <div className="flex items-center gap-2">
           <Droplet className="w-6 h-6 md:w-7 md:h-7 text-foreground/80" />
           <span className="text-foreground font-bold text-base md:text-lg">Drink More</span>
+          <a href="https://vobiuslabs.com" target="_blank" rel="noopener noreferrer"
+            className="text-muted-foreground hover:text-foreground transition-colors"
+            style={{ fontSize: 11, marginLeft: 6, letterSpacing: "0.02em" }}>
+            A Vobius Labs Product
+          </a>
         </div>
         <div className="hidden md:flex items-center gap-1 text-sm text-muted-foreground">
           {["Home", "How It Works", "Features", "Download"].map((l, i) => (
@@ -62,49 +68,99 @@ const Navbar = () => {
 };
 
 /* ─── Hero ─── */
-const Hero = () => (
-  <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-    <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0">
-      <source src="https://videos.pexels.com/video-files/2499611/2499611-hd_1920_1080_30fps.mp4" type="video/mp4" />
-    </video>
-    <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-background to-transparent z-[1]" />
-    <div className="absolute inset-0 bg-background/40 z-[1]" />
+const Hero = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
-    <div className="relative z-10 text-center px-6 pt-28 md:pt-32 max-w-4xl mx-auto">
-      <motion.div {...fadeUp(0)} className="flex items-center justify-center mb-8">
-        <div className="flex -space-x-2">
-          {[avatar1, avatar2, avatar3].map((src, i) => (
-            <img key={i} src={src} alt="" className="w-8 h-8 rounded-full border-2 border-background object-cover" width={32} height={32} />
-          ))}
-        </div>
-        <span className="ml-3 text-sm text-muted-foreground">12,000+ people staying hydrated</span>
-      </motion.div>
+  useEffect(() => {
+    const video = videoRef.current;
+    const section = sectionRef.current;
+    if (!video || !section) return;
 
-      <motion.h1 {...fadeUp(0.1)} className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-medium tracking-[-1.5px] md:tracking-[-2px] mb-5 md:mb-6">
-        Stay Hydrated, Stay <span className="font-serif italic font-normal">Alive</span>
-      </motion.h1>
+    // Show first frame as soon as video metadata is ready
+    const onReady = () => { video.currentTime = 0.01; };
+    video.addEventListener("loadedmetadata", onReady, { once: true });
+    video.load();
 
-      <motion.p {...fadeUp(0.2)} className="text-base md:text-lg mb-8 md:mb-10 px-2" style={{ color: "hsl(var(--hero-subtitle))" }}>
-        Smart reminders that help you build the habit of drinking enough water every day.
-      </motion.p>
+    const onScroll = () => {
+      if (video.readyState < 2 || !video.duration) return;
+      const rect = section.getBoundingClientRect();
+      const scrollable = section.offsetHeight - window.innerHeight;
+      if (scrollable <= 0) return;
+      const scrolled = Math.max(0, Math.min(scrollable, -rect.top));
+      video.currentTime = (scrolled / scrollable) * video.duration * 0.93;
+    };
 
-      <motion.div {...fadeUp(0.3)} className="liquid-glass rounded-full p-1.5 md:p-2 max-w-lg mx-auto flex items-center">
-        <input
-          type="email"
-          placeholder="Enter your email"
-          className="flex-1 bg-transparent border-none outline-none px-3 md:px-4 py-2 text-foreground placeholder:text-muted-foreground text-sm min-w-0"
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      video.removeEventListener("loadedmetadata", onReady);
+    };
+  }, []);
+
+  return (
+    /* NO overflow-hidden on section — it breaks position:sticky */
+    <section ref={sectionRef} id="home" style={{ height: "250vh", position: "relative" }}>
+      {/* Sticky frame — height: 100vh, clips content, doesn't affect sticky */}
+      <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden" }}>
+
+        {/* Background video */}
+        <video
+          ref={videoRef}
+          playsInline
+          muted
+          preload="auto"
+          poster={`${import.meta.env.BASE_URL}drinkmore_poster.jpg`}
+          style={{
+            position: "absolute", inset: 0,
+            width: "100%", height: "100%",
+            objectFit: "cover",
+            transform: "scale(1.08)",
+            zIndex: 0,
+          }}
+          src={`${import.meta.env.BASE_URL}drinkmore_mobile.mp4`}
         />
-        <motion.button
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.98 }}
-          className="bg-foreground text-background rounded-full px-5 md:px-8 py-2.5 md:py-3 text-xs md:text-sm font-semibold whitespace-nowrap"
-        >
-          JOIN WAITLIST
-        </motion.button>
-      </motion.div>
-    </div>
-  </section>
-);
+
+        {/* Overlays */}
+        <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.12)", zIndex: 1 }} />
+        <div style={{
+          position: "absolute", bottom: 0, left: 0, right: 0, height: 160,
+          background: "linear-gradient(to top, hsl(var(--background)), transparent)",
+          zIndex: 2,
+        }} />
+
+        {/* Social proof — top */}
+        <div style={{ position: "absolute", top: 96, left: 0, right: 0, zIndex: 10, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ display: "flex" }}>
+            {[avatar1, avatar2, avatar3].map((s, i) => (
+              <img key={i} src={s} alt="" style={{ width: 32, height: 32, borderRadius: "50%", border: "2px solid hsl(var(--background))", objectFit: "cover", marginLeft: i > 0 ? -8 : 0 }} />
+            ))}
+          </div>
+          <span style={{ marginLeft: 12, fontSize: 14, color: "hsl(var(--muted-foreground))" }}>12,000+ people staying hydrated</span>
+        </div>
+
+        {/* Main content — bottom of screen */}
+        <div style={{ position: "absolute", bottom: 0, left: "50%", transform: "translateX(-50%)", width: "100%", maxWidth: 896, zIndex: 10, textAlign: "center", padding: "0 24px 72px" }}>
+          <motion.h1 {...fadeUp(0.1)} className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-medium tracking-[-1.5px] md:tracking-[-2px] mb-5 md:mb-6">
+            Stay Hydrated, Stay <span className="font-serif italic font-normal">Alive</span>
+          </motion.h1>
+          <motion.p {...fadeUp(0.2)} className="text-base md:text-lg mb-8 md:mb-10 px-2" style={{ color: "hsl(var(--hero-subtitle))" }}>
+            Smart reminders that help you build the habit of drinking enough water every day.
+          </motion.p>
+          <motion.div {...fadeUp(0.3)} className="liquid-glass rounded-full p-1.5 md:p-2 max-w-lg mx-auto flex items-center">
+            <input type="email" placeholder="Enter your email"
+              className="flex-1 bg-transparent border-none outline-none px-3 md:px-4 py-2 text-foreground placeholder:text-muted-foreground text-sm min-w-0" />
+            <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}
+              className="bg-foreground text-background rounded-full px-5 md:px-8 py-2.5 md:py-3 text-xs md:text-sm font-semibold whitespace-nowrap">
+              JOIN WAITLIST
+            </motion.button>
+          </motion.div>
+        </div>
+
+      </div>
+    </section>
+  );
+};
 
 /* ─── Stats ─── */
 const stats = [
@@ -304,8 +360,12 @@ const Footer = () => (
 );
 
 /* ─── Page ─── */
-const Index = () => (
+const Index = () => {
+  const [loaded, setLoaded] = useState(false);
+  const handleDone = useCallback(() => setLoaded(true), []);
+  return (
   <div className="bg-background text-foreground min-h-screen">
+    {!loaded && <LoadingScreen onDone={handleDone} videoSrc={`${import.meta.env.BASE_URL}drinkmore_mobile.mp4`} />}
     <Navbar />
     <Hero />
     <StatsSection />
@@ -314,6 +374,7 @@ const Index = () => (
     <CTASection />
     <Footer />
   </div>
-);
+  );
+};
 
 export default Index;
